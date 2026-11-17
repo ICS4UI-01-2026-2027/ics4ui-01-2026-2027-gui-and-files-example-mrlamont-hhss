@@ -51,10 +51,7 @@ public class Controller implements ActionListener{
         this.screen.setDescription(this.map.getDescription());
     }
 
-    
-    public static void main(String[] args) {
-        new Controller();
-    }
+
 
     
 }

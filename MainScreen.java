@@ -86,8 +86,5 @@ public class MainScreen extends JFrame{
     }
 
 
-    public static void main(String[] args) {
-        new MainScreen();
-    }
 
 }
