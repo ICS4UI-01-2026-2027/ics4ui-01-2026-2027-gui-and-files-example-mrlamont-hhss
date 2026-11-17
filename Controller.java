@@ -20,6 +20,17 @@ public class Controller implements ActionListener{
         this.screen.setDescription(this.map.getDescription());
     }
 
+    public Controller(Map model, MainScreen view ){
+        this.map = model;
+        this.screen = view;
+
+        // set the first scene
+        this.screen.setPicture(this.map.getImage());
+        // update the first
+        this.screen.setDescription(this.map.getDescription());
+    
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         // get which button is pressed

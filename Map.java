@@ -10,49 +10,63 @@ public class Map {
     private int currentCol;
 
     public Map(String mapFile){
-        // create the scanner to read the file
+        
+        // create a spot in memory to create the Scanner
+        Scanner fileInput = null;
+        // could be errors, try to load the file to read
         try{
-            Scanner input = new Scanner(new File(mapFile));
-            // scanning map dimensions
-            this.maxRows = input.nextInt();
-            // drop to new line
-            input.nextLine();
-            this.maxCols = input.nextInt();
-            // drop to new line
-            input.nextLine();
-
-            // get player location
-            this.currentRow = input.nextInt();
-            input.nextLine();
-            this.currentCol = input.nextInt();
-            input.nextLine();
-
-            // create the scenes array
-            this.scenes = new Scene[this.maxCols*this.maxRows];
-            // read in all of the scenes
-            for(int i = 0; i < this.scenes.length; i++){
-                // row and column of the scene
-                int row = input.nextInt();
-                int col = input.nextInt();
-                // picture file name
-                String filename = input.next();
-                // directions to move
-                boolean up = input.nextBoolean();
-                boolean right = input.nextBoolean();
-                boolean down = input.nextBoolean();
-                boolean left = input.nextBoolean();
-                // get any description left AND move to the next line
-                String description = input.nextLine();
-                // create the scene
-                Scene s = new Scene(row, col, filename, up, right, down, left, description);
-                // put it into the array
-                this.scenes[i] = s;
-            }
-
-        }catch(Exception e){
-            // print out any errors
+            fileInput = new Scanner(new File(mapFile));
+        } catch(Exception e){ // if an error happens
+            // print the error
             e.printStackTrace();
         }
+
+        // read in the number of rows and columns
+        this.maxRows = fileInput.nextInt();
+        // move to next line
+        fileInput.nextLine();
+        this.maxCols = fileInput.nextInt();
+        fileInput.nextLine();
+
+        // read in my current location
+        this.currentRow = fileInput.nextInt();
+        fileInput.nextLine();
+        this.currentCol = fileInput.nextInt();
+        fileInput.nextLine();
+
+        // initialize the scene array
+        this.scenes = new Scene[this.maxRows*this.maxCols];
+
+        // read in each scene and put it in the array
+        int index = 0;
+        // while there is still something to scan
+        while(fileInput.hasNext()){
+            // row and column of the scene
+            int row = fileInput.nextInt();
+            int col = fileInput.nextInt();
+
+            // read in picture filename
+            String picFile = fileInput.next();
+
+            // movement directions
+            boolean north = fileInput.nextBoolean();
+            boolean east = fileInput.nextBoolean();
+            boolean south = fileInput.nextBoolean();
+            boolean west = fileInput.nextBoolean();
+
+            // any description? and move down
+            String desc = fileInput.nextLine();
+
+            // make the scene
+            Scene scene = new Scene(row, col, picFile, 
+                north, east, south, west, desc);
+
+            // put the scene into the array
+            this.scenes[index] = scene;
+            // move the index up
+            index++;
+        }
+
     }
 
     // find a specific scene

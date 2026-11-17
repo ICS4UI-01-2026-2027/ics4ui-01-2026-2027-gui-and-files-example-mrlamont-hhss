@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.image.*;
-
 import javax.swing.*;
 
 /**
@@ -10,84 +9,85 @@ import javax.swing.*;
 */
 public class MainScreen extends JFrame{
 
-    // buttons to move around
-    private JButton upButton;
-    private JButton downButton;
-    private JButton rightButton;
-    private JButton leftButton;
-    // picture to display
-    private PicturePanel picture;
-    // text to display
+    private JPanel mainPanel;
+    private JButton up, down, left, right;
     private JTextField description;
+    private PicturePanel picture;
 
-    // constructor
     public MainScreen(){
-        
-        // show the window
-        this.setVisible(true);
-        // make the close button work
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // makes a panel and sets it to be a border layout
+        this.mainPanel = new JPanel();
+        this.mainPanel.setLayout(new BorderLayout());
 
-        // create the panel to put in the frame
-        JPanel mainPanel = new JPanel();
-        // set the layout to a border layout
-        mainPanel.setLayout(new BorderLayout());
+        // create all the buttons
+        this.up = new JButton("UP");
+        this.down = new JButton("DOWN");
+        this.right = new JButton("RIGHT");
+        this.left = new JButton("LEFT");
 
-        // create the buttons
-        this.upButton = new JButton("UP");
-        this.leftButton = new JButton("LEFT");
-        this.rightButton = new JButton("RIGHT");
-        this.downButton = new JButton("DOWN");
-        // set action commands to tell which button was pressed
-        this.upButton.setActionCommand("up");
-        this.downButton.setActionCommand("down");
-        this.leftButton.setActionCommand("left");
-        this.rightButton.setActionCommand("right");
-
-        // make the description area
-        this.description = new JTextField();
-
-        // make the picture panel
+        // create the picture panel
         this.picture = new PicturePanel();
 
-        // make bottom section
-        JPanel bottomSection = new JPanel();
-        // grid with 2 rows, 1 column
-        bottomSection.setLayout(new GridLayout(2,1));
+        // create the description
+        this.description = new JTextField();
 
-        // assemble all the pieces together
-        mainPanel.add(BorderLayout.PAGE_START, upButton);
-        mainPanel.add(BorderLayout.LINE_START, leftButton);
-        mainPanel.add(BorderLayout.CENTER, picture);
-        mainPanel.add(BorderLayout.LINE_END, rightButton);
-        // add things to the grid first for the bottom part
-        bottomSection.add(downButton);
-        bottomSection.add(description);
-        // add the bottom part
-        mainPanel.add(BorderLayout.PAGE_END, bottomSection);
 
-        // add the main panel to the frame to see it
-        this.add(mainPanel);
-        // sets the window size
-        this.setSize(800,600);
+        // create a panel to add both down and the desciption
+        JPanel bottom = new JPanel();
+        // grid layout of 2 rows by 1 column
+        bottom.setLayout(new GridLayout(2,1));
+        // add the button and description to the bottom
+        bottom.add(this.down);
+        bottom.add(this.description);
+
+        // put all the components on the panel
+        this.mainPanel.add(this.up, BorderLayout.PAGE_START);
+        this.mainPanel.add(this.right, BorderLayout.LINE_END);
+        this.mainPanel.add(bottom, BorderLayout.PAGE_END);
+        this.mainPanel.add(this.left, BorderLayout.LINE_START);
+        this.mainPanel.add(this.picture, BorderLayout.CENTER);
+
+        // set the preferred size of the panel
+        this.mainPanel.setPreferredSize(new Dimension(800, 600));
+
+        // put the panel on the frame
+        this.add(this.mainPanel);
+        // pack the frame to automatically size it
+        this.pack();
+        // make sure the window is visible
+        this.setVisible(true);
+        // make the red X do what you think it should do
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
     }
 
-    // links the listener with all the buttons
-    public void addActionListener(ActionListener listener){
-        this.upButton.addActionListener(listener);
-        this.downButton.addActionListener(listener);
-        this.rightButton.addActionListener(listener);
-        this.leftButton.addActionListener(listener);
+    public void addActionListener(Controller c){
+        // set the command on every button
+        this.up.setActionCommand("up");
+        this.down.setActionCommand("down");
+        this.right.setActionCommand("right");
+        this.left.setActionCommand("left");
+
+        // add the link from the button to the controller
+        this.up.addActionListener(c);
+        this.down.addActionListener(c);
+        this.right.addActionListener(c);
+        this.left.addActionListener(c);
     }
 
-    // change the bottom text on the screen
     public void setDescription(String text){
+        // textbox should show the new text
         this.description.setText(text);
     }
 
-    // change the picture on the panel
-    public void setPicture(BufferedImage image){
-        this.picture.setImage(image);
+    public void setPicture(BufferedImage img){
+        // put the image on the picture panel
+        this.picture.setImage(img);
+    }
+
+
+    public static void main(String[] args) {
+        new MainScreen();
     }
 
 }
